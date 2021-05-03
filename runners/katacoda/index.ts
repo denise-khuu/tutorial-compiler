@@ -199,13 +199,13 @@ export class Katacoda extends Runner {
         let filePath = path.join(this.getVariable(this.workspaceDirectory), path.dirname(runCommand.command.parameters[0])).replace(/\\/g, "/");
         let fileDir = path.join(workspaceDir, runCommand.command.parameters[0]).replace(/\\/g, "/");
         let fileName = path.basename(path.join(runCommand.command.parameters[0]));
-        let content = "";
-        if(runCommand.command.parameters.length == 2) {
-            content = fs.readFileSync(path.join(this.playbookPath, runCommand.command.parameters[1]), { encoding: "utf-8" });
-        }
+        let content = (runCommand.command.parameters.length == 2) 
+            ? fs.readFileSync(path.join(this.playbookPath, runCommand.command.parameters[1]), { encoding: "utf-8" })
+            : false;
+
         this.pushStep(runCommand, "Create a new file", "step" + runCommand.stepIndex + ".md");
         
-        this.renderTemplate("createFile.md", this.outputPathTutorial + "step" + runCommand.stepIndex + ".md", { text: runCommand.text, textAfter: runCommand.textAfter, filePath: filePath, fileDir: fileDir , fileName:fileName , content: content});
+        this.renderTemplate("createFile.md", this.outputPathTutorial + "step" + runCommand.stepIndex + ".md", { text: runCommand.text, textAfter: runCommand.textAfter, filePath: filePath, fileDir: fileDir , fileName: fileName , content: content});
         return null;
     }
 
